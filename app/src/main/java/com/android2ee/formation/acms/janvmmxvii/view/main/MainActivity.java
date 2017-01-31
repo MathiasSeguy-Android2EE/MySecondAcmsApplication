@@ -1,12 +1,17 @@
-package com.android2ee.formation.acms.janvmmxvii;
+package com.android2ee.formation.acms.janvmmxvii.view.main;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
 
+import com.android2ee.formation.acms.janvmmxvii.R;
 import com.android2ee.formation.acms.janvmmxvii.view.mother.MotherActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends MotherActivity {
     /***********************************************************
@@ -32,7 +37,15 @@ public class MainActivity extends MotherActivity {
     /**
      * The result area
      */
-    private  TextView txvResult;
+    private ListView lsvResult;
+    /**
+     * The arrayAdapter (the brain) of the listView
+     */
+    private ArrayAdapter<String> arrayAdapter;
+    /**
+     * The dataset of the ListView/ArrayAdapter
+     */
+    private ArrayList<String> messages;
     /**
      * The button to add the content of the edtMessage into the result area
      */
@@ -52,12 +65,22 @@ public class MainActivity extends MotherActivity {
         //findViewBy id
         edtMessage= (EditText) findViewById(R.id.edtMessage);
         btnAdd= (Button) findViewById(R.id.btnAdd);
-        txvResult= (TextView) findViewById(R.id.txvResult);
+        lsvResult= (ListView) findViewById(R.id.lsvResult);
+        //manage a list view
+        messages=new ArrayList<>();
+        arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,messages);
+        lsvResult.setAdapter(arrayAdapter);
         //Add Listeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addMessage();
+            }
+        });
+        lsvResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                copyItemInEdtMessage(position);
             }
         });
         //Add animations
@@ -67,14 +90,18 @@ public class MainActivity extends MotherActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(RESULT,txvResult.getText().toString());
+        outState.putStringArrayList(RESULT,messages);
         outState.putString(MESSAGE,edtMessage.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        txvResult.setText(savedInstanceState.getString(RESULT));
+        messages.clear();
+        for (String s : savedInstanceState.getStringArrayList(RESULT)) {
+            messages.add(s);
+        }
+        arrayAdapter.notifyDataSetChanged();
         edtMessage.setText(savedInstanceState.getString(MESSAGE));
     }
 
@@ -83,11 +110,23 @@ public class MainActivity extends MotherActivity {
     **********************************************************/
 
 
+    /**
+     * Add the content of the EditText to the result area
+     */
     private void addMessage(){
         //find the message of the edtMessage
         messageTemp=edtMessage.getText().toString();
-        txvResult.append(eol);
-        txvResult.append(messageTemp);
+        //second way
+        arrayAdapter.add(messageTemp);
         edtMessage.setText("");
+    }
+
+    /**
+     * Copy the value of the Item in the EdtMessage
+     * @param position
+     */
+    private void copyItemInEdtMessage(int position){
+        messageTemp=arrayAdapter.getItem(position);
+        edtMessage.setText(messageTemp);
     }
 }
