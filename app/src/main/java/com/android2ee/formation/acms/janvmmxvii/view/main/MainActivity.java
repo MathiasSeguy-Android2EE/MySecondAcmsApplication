@@ -71,6 +71,9 @@ public class MainActivity extends MotherActivity {
         lsvResult= (ListView) findViewById(R.id.lsvResult);
         //manage a list view
         messages=new ArrayList<>();
+        for(int i=0;i<10000;i++){
+            messages.add(new MySmsMessage("Hello buddy "+i,i));
+        }
         arrayAdapter=new MySmsMessageAdapter(this,messages);
         lsvResult.setAdapter(arrayAdapter);
         //Add Listeners

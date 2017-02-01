@@ -58,7 +58,7 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
      **********************************************************/
     private View rowView;
     private MySmsMessage smsMessage;
-
+    private ViewHolder vh;
     /***********************************************************
     *  Constructors
     **********************************************************/
@@ -70,13 +70,72 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        rowView =inflater.inflate(R.layout.activity_main_item_even,parent,false);
+        rowView=convertView;
+        if(rowView==null){
+            if(getItemViewType(position)==0){
+                rowView =inflater.inflate(R.layout.activity_main_item_even,parent,false);
+            }else{
+                rowView =inflater.inflate(R.layout.activity_main_item_odd,parent,false);
+            }
+            vh=new ViewHolder(rowView);
+            rowView.setTag(vh);
+        }
          smsMessage=getItem(position);
+        vh= (ViewHolder) rowView.getTag();
         //update the view
-        ((TextView)rowView.findViewById(R.id.txvName)).setText(smsMessage.getName());
-        ((TextView)rowView.findViewById(R.id.txvMessage)).setText(smsMessage.getMessage());
-        ((TextView)rowView.findViewById(R.id.txvFrom)).setText(smsMessage.getFrom());
-        ((ImageView)rowView.findViewById(R.id.imvPicture)).setImageResource(smsMessage.getPictureId());
+        vh.getTxvName().setText(smsMessage.getName());
+        vh.getTxvMessage().setText(smsMessage.getMessage());
+        vh.getTxvFrom().setText(smsMessage.getFrom());
+        vh.getImvPicture().setImageResource(smsMessage.getPictureId());
         return rowView;
+    }
+
+    /***********************************************************
+     * Managing odd and even line
+     **********************************************************/
+
+    @Override
+    public int getItemViewType(int position) {
+        if(getItem(position).getName().equals(MySmsMessage.TOTO)){
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    /***********************************************************
+     *  ViewHolder
+     **********************************************************/
+    private class ViewHolder{
+        TextView txvName,txvMessage,txvFrom;
+        ImageView imvPicture;
+        View view;
+        public ViewHolder(View rowView){
+            view=rowView;
+            txvName=(TextView)rowView.findViewById(R.id.txvName);
+            txvMessage= (TextView) rowView.findViewById(R.id.txvMessage);
+            txvFrom= (TextView) rowView.findViewById(R.id.txvFrom);
+            imvPicture= (ImageView) rowView.findViewById(R.id.imvPicture);
+        }
+
+        public ImageView getImvPicture() {
+            return imvPicture;
+        }
+
+        public TextView getTxvFrom() {
+            return txvFrom;
+        }
+
+        public TextView getTxvMessage() {
+            return txvMessage;
+        }
+
+        public TextView getTxvName() {
+            return txvName;
+        }
     }
 }
