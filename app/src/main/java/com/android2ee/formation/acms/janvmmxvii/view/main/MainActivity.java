@@ -1,14 +1,17 @@
 package com.android2ee.formation.acms.janvmmxvii.view.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.android2ee.formation.acms.janvmmxvii.R;
+import com.android2ee.formation.acms.janvmmxvii.cross.model.MySmsMessage;
+import com.android2ee.formation.acms.janvmmxvii.view.main.adapter.MySmsMessageAdapter;
 import com.android2ee.formation.acms.janvmmxvii.view.mother.MotherActivity;
 
 import java.util.ArrayList;
@@ -41,11 +44,11 @@ public class MainActivity extends MotherActivity {
     /**
      * The arrayAdapter (the brain) of the listView
      */
-    private ArrayAdapter<String> arrayAdapter;
+    private MySmsMessageAdapter arrayAdapter;
     /**
      * The dataset of the ListView/ArrayAdapter
      */
-    private ArrayList<String> messages;
+    private ArrayList<MySmsMessage> messages;
     /**
      * The button to add the content of the edtMessage into the result area
      */
@@ -68,7 +71,7 @@ public class MainActivity extends MotherActivity {
         lsvResult= (ListView) findViewById(R.id.lsvResult);
         //manage a list view
         messages=new ArrayList<>();
-        arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,messages);
+        arrayAdapter=new MySmsMessageAdapter(this,messages);
         lsvResult.setAdapter(arrayAdapter);
         //Add Listeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -90,18 +93,18 @@ public class MainActivity extends MotherActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList(RESULT,messages);
+//        outState.putStringArrayList(RESULT,messages);
         outState.putString(MESSAGE,edtMessage.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        messages.clear();
-        for (String s : savedInstanceState.getStringArrayList(RESULT)) {
-            messages.add(s);
-        }
-        arrayAdapter.notifyDataSetChanged();
+//        messages.clear();
+//        for (String s : savedInstanceState.getStringArrayList(RESULT)) {
+//            messages.add(s);
+//        }
+//        arrayAdapter.notifyDataSetChanged();
         edtMessage.setText(savedInstanceState.getString(MESSAGE));
     }
 
@@ -117,8 +120,12 @@ public class MainActivity extends MotherActivity {
         //find the message of the edtMessage
         messageTemp=edtMessage.getText().toString();
         //second way
-        arrayAdapter.add(messageTemp);
+        arrayAdapter.add(new MySmsMessage(messageTemp,messages.size()));
         edtMessage.setText("");
+        //then you can hide the keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edtMessage.getWindowToken(), 0);
+
     }
 
     /**
@@ -126,7 +133,7 @@ public class MainActivity extends MotherActivity {
      * @param position
      */
     private void copyItemInEdtMessage(int position){
-        messageTemp=arrayAdapter.getItem(position);
+        messageTemp=arrayAdapter.getItem(position).getMessage();
         edtMessage.setText(messageTemp);
     }
 }

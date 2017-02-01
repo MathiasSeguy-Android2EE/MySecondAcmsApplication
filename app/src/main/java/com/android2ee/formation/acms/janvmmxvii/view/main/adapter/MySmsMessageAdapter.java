@@ -33,9 +33,12 @@ package com.android2ee.formation.acms.janvmmxvii.view.main.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android2ee.formation.acms.janvmmxvii.R;
 import com.android2ee.formation.acms.janvmmxvii.cross.model.MySmsMessage;
@@ -46,14 +49,34 @@ import java.util.ArrayList;
  * Created by Mathias Seguy - Android2EE on 31/01/2017.
  */
 public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
+    /***********************************************************
+    *  Attributes
+    **********************************************************/
+    LayoutInflater inflater;
+    /***********************************************************
+     *  Temp Attributes
+     **********************************************************/
+    private View rowView;
+    private MySmsMessage smsMessage;
 
+    /***********************************************************
+    *  Constructors
+    **********************************************************/
     public MySmsMessageAdapter(Context context, ArrayList<MySmsMessage> dataset) {
         super(context, R.layout.activity_main_item_even,dataset);
+        inflater=LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return super.getView(position, convertView, parent);
+        rowView =inflater.inflate(R.layout.activity_main_item_even,parent,false);
+         smsMessage=getItem(position);
+        //update the view
+        ((TextView)rowView.findViewById(R.id.txvName)).setText(smsMessage.getName());
+        ((TextView)rowView.findViewById(R.id.txvMessage)).setText(smsMessage.getMessage());
+        ((TextView)rowView.findViewById(R.id.txvFrom)).setText(smsMessage.getFrom());
+        ((ImageView)rowView.findViewById(R.id.imvPicture)).setImageResource(smsMessage.getPictureId());
+        return rowView;
     }
 }

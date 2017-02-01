@@ -31,6 +31,7 @@
 
 package com.android2ee.formation.acms.janvmmxvii.cross.model;
 
+import com.android2ee.formation.acms.janvmmxvii.MyApplication;
 import com.android2ee.formation.acms.janvmmxvii.R;
 
 /**
@@ -45,6 +46,7 @@ public class MySmsMessage {
 
     private String name;
     private String message;
+    private String from;
     private int pictureId;
     boolean fromOwner=false;
     /***********************************************************
@@ -62,6 +64,7 @@ public class MySmsMessage {
             fromOwner=true;
             pictureId= R.drawable.ic_face_tata;
         }
+        from=MyApplication.ins().getString(R.string.notset);
     }
     /***********************************************************
     *  Getters/Setters
@@ -96,5 +99,13 @@ public class MySmsMessage {
 
     public void setPictureId(int pictureId) {
         this.pictureId = pictureId;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 }

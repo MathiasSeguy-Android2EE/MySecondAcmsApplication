@@ -3,4 +3,5 @@
     <string name="txvTitle">Hello World!</string>
     <string name="edtMessage">Mets ton texte ici s\'il te plait</string>
     <string name="btnAdd">Ajouter</string>
+    <string name="notset">not set</string>
 </resources>
