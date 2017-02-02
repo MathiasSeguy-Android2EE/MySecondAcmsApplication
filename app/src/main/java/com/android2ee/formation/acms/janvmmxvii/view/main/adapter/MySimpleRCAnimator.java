@@ -1,8 +1,8 @@
 /**
  * <ul>
- * <li>MyApplication</li>
- * <li>com.android2ee.formation.acms.janvmmxvii</li>
- * <li>01/02/2017</li>
+ * <li>MySimpleRCAnimator</li>
+ * <li>com.android2ee.formation.acms.janvmmxvii.view.main.adapter</li>
+ * <li>02/02/2017</li>
  * <p>
  * <li>======================================================</li>
  * <p>
@@ -29,36 +29,18 @@
  * *****************************************************************************************************************</br>
  */
 
-package com.android2ee.formation.acms.janvmmxvii;
+package com.android2ee.formation.acms.janvmmxvii.view.main.adapter;
 
-import android.app.Application;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by Mathias Seguy - Android2EE on 01/02/2017.
+ * Created by Mathias Seguy - Android2EE on 02/02/2017.
  */
-public class MyApplication extends Application {
-    /***********************************************************
-     * Singleton Pattern
-     **********************************************************/
-    private static MyApplication instance;
-    public static MyApplication ins(){
-        return instance;
-    }
-    /***********************************************************
-    *  Attributes
-    **********************************************************/
-    private  static boolean postICS;
-    /***********************************************************
-    *  Managing LifeCycle
-    **********************************************************/
+public class MySimpleRCAnimator extends DefaultItemAnimator {
     @Override
-    public void onCreate() {
-        super.onCreate();
-        instance=this;
-        postICS=getResources().getBoolean(R.bool.postICS);
-    }
-
-    public static boolean isPostICS(){
-        return postICS;
+    public boolean animateAdd(RecyclerView.ViewHolder holder) {
+        ((MySmsMessRecyclerAdapter.ViewHolder)holder).animateAddedItem();
+        return super.animateAdd(holder);
     }
 }

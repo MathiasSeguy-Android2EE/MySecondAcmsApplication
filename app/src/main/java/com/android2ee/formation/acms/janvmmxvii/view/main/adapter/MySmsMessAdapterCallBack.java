@@ -1,7 +1,7 @@
 /**
  * <ul>
- * <li>MyApplication</li>
- * <li>com.android2ee.formation.acms.janvmmxvii</li>
+ * <li>MySmsMessAdapterCallBack</li>
+ * <li>com.android2ee.formation.acms.janvmmxvii.view.main.adapter</li>
  * <li>01/02/2017</li>
  * <p>
  * <li>======================================================</li>
@@ -28,37 +28,23 @@
  * <em>http://mathias-seguy.developpez.com/</em></br> </br>
  * *****************************************************************************************************************</br>
  */
+package com.android2ee.formation.acms.janvmmxvii.view.main.adapter;
 
-package com.android2ee.formation.acms.janvmmxvii;
-
-import android.app.Application;
+import com.android2ee.formation.acms.janvmmxvii.cross.model.MySmsMessage;
 
 /**
  * Created by Mathias Seguy - Android2EE on 01/02/2017.
  */
-public class MyApplication extends Application {
-    /***********************************************************
-     * Singleton Pattern
-     **********************************************************/
-    private static MyApplication instance;
-    public static MyApplication ins(){
-        return instance;
-    }
-    /***********************************************************
-    *  Attributes
-    **********************************************************/
-    private  static boolean postICS;
-    /***********************************************************
-    *  Managing LifeCycle
-    **********************************************************/
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance=this;
-        postICS=getResources().getBoolean(R.bool.postICS);
-    }
+public interface MySmsMessAdapterCallBack {
 
-    public static boolean isPostICS(){
-        return postICS;
-    }
+    /**
+     * Callback to be wake up when an item is selected
+     */
+    public void itemSelected(MySmsMessage item);
+
+    /**
+     * Ask if the item has to be deleted
+     * @param item
+     */
+    public void askforItemDeletion(MySmsMessage item,int position);
 }

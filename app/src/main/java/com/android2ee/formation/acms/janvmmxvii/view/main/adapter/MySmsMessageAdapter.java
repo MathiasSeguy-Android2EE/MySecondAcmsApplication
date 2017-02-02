@@ -87,7 +87,16 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
         vh.getTxvMessage().setText(smsMessage.getMessage());
         vh.getTxvFrom().setText(smsMessage.getFrom());
         vh.getImvPicture().setImageResource(smsMessage.getPictureId());
+        vh.setCurrentPosition(position);
         return rowView;
+    }
+
+    /**
+     * Delete from the dataset the item at the position below
+     * @param position
+     */
+    private void deleteItem(int position){
+        remove(getItem(position));
     }
 
     /***********************************************************
@@ -112,7 +121,8 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
      **********************************************************/
     private class ViewHolder{
         TextView txvName,txvMessage,txvFrom;
-        ImageView imvPicture;
+        ImageView imvPicture,imvDelete;
+        int currentPosition;
         View view;
         public ViewHolder(View rowView){
             view=rowView;
@@ -120,7 +130,25 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
             txvMessage= (TextView) rowView.findViewById(R.id.txvMessage);
             txvFrom= (TextView) rowView.findViewById(R.id.txvFrom);
             imvPicture= (ImageView) rowView.findViewById(R.id.imvPicture);
+            imvDelete= (ImageView) rowView.findViewById(R.id.imvDelete);
+            imvDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteCurrent();
+                }
+            });
         }
+        /***********************************************************
+        *  Business Methods
+        **********************************************************/
+        private void deleteCurrent(){
+            (MySmsMessageAdapter.this).deleteItem(currentPosition);
+        }
+
+
+        /***********************************************************
+        *  Getters/Setters
+        **********************************************************/
 
         public ImageView getImvPicture() {
             return imvPicture;
@@ -136,6 +164,10 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
 
         public TextView getTxvName() {
             return txvName;
+        }
+
+        public void setCurrentPosition(int currentPosition) {
+            this.currentPosition = currentPosition;
         }
     }
 }

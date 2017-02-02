@@ -1,11 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppBlankTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <!--Both themes below are those accepted to make the ToolBar works-->
+    <!-- Base application thème. -->
+    <style name="AppTheme" parent="AppBlankTheme">
+        <!-- Customize your theme here. -->
+        <!-- Base application thème. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <!--<item name="spinnerDropDownItemStyle">@style/mydropdown</item>-->
+    </style>
 </resources>

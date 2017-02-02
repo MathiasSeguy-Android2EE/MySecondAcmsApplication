@@ -31,18 +31,21 @@
 
 package com.android2ee.formation.acms.janvmmxvii.cross.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.android2ee.formation.acms.janvmmxvii.MyApplication;
 import com.android2ee.formation.acms.janvmmxvii.R;
 
 /**
  * Created by Mathias Seguy - Android2EE on 31/01/2017.
  */
-public class MySmsMessage {
+public class MySmsMessage implements Parcelable {
     public static final String TOTO = "Toto";
     public static final String TATA = "Tata";
     /***********************************************************
-    *  Attributes
-    **********************************************************/
+     *  Attributes
+     **********************************************************/
 
     private String name;
     private String message;
@@ -50,8 +53,8 @@ public class MySmsMessage {
     private int pictureId;
     boolean fromOwner=false;
     /***********************************************************
-    *  Constructors
-    **********************************************************/
+     *  Constructors
+     **********************************************************/
     public MySmsMessage(String mess,int position){
         this.message=mess;
         if(position%2==0){
@@ -67,8 +70,8 @@ public class MySmsMessage {
         from=MyApplication.ins().getString(R.string.notset);
     }
     /***********************************************************
-    *  Getters/Setters
-    **********************************************************/
+     *  Getters/Setters
+     **********************************************************/
     public boolean isFromOwner() {
         return fromOwner;
     }
@@ -108,4 +111,43 @@ public class MySmsMessage {
     public void setFrom(String from) {
         this.from = from;
     }
+
+    /***********************************************************
+     * Parcelabiilisation
+     **********************************************************/
+
+    protected MySmsMessage(Parcel in) {
+        name = in.readString();
+        message = in.readString();
+        from = in.readString();
+        pictureId = in.readInt();
+        fromOwner = in.readByte() != 0x00;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(message);
+        dest.writeString(from);
+        dest.writeInt(pictureId);
+        dest.writeByte((byte) (fromOwner ? 0x01 : 0x00));
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MySmsMessage> CREATOR = new Parcelable.Creator<MySmsMessage>() {
+        @Override
+        public MySmsMessage createFromParcel(Parcel in) {
+            return new MySmsMessage(in);
+        }
+
+        @Override
+        public MySmsMessage[] newArray(int size) {
+            return new MySmsMessage[size];
+        }
+    };
 }

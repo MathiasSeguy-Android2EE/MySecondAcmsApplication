@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">MySecondAcmsApplication</string>
+    <string name="app_name">Hello</string>
     <string name="txvTitle">Hello World!</string>
     <string name="edtMessage">Mets ton texte ici s\'il te plait</string>
     <string name="btnAdd">Ajouter</string>
     <string name="notset">not set</string>
+    <string name="alertdialog_message">Souhaitez vous détruire l\'item affichant %1$s </string>
+    <string name="alertdialog_ok">Détruire</string>
+    <string name="alertdialog_nok">Annuler</string>
+    <string name="snackbar_message">La destruction est effective</string>
+    <string name="snackbar_action">Annuler</string>
+    <string name="toast_message">Et alors à quoi ca sert que ducros il se decarcasse, hein, putain ?</string>
+    <string name="app_bar_deletethemall">Delete Them All, ahahahaha !!!</string>
 </resources>
