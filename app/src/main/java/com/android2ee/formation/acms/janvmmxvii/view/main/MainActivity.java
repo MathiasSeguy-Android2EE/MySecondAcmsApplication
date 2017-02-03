@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,11 +27,18 @@ import android.widget.Toast;
 
 import com.android2ee.formation.acms.janvmmxvii.MyApplication;
 import com.android2ee.formation.acms.janvmmxvii.R;
+import com.android2ee.formation.acms.janvmmxvii.cross.events.MySmsMessageAddedEvent;
+import com.android2ee.formation.acms.janvmmxvii.cross.events.MySmsMessageDeletedEvent;
+import com.android2ee.formation.acms.janvmmxvii.cross.events.MySmsMessageLoadedEvent;
 import com.android2ee.formation.acms.janvmmxvii.cross.model.MySmsMessage;
 import com.android2ee.formation.acms.janvmmxvii.view.main.adapter.MySimpleRCAnimator;
 import com.android2ee.formation.acms.janvmmxvii.view.main.adapter.MySmsMessAdapterCallBack;
 import com.android2ee.formation.acms.janvmmxvii.view.main.adapter.MySmsMessRecyclerAdapter;
 import com.android2ee.formation.acms.janvmmxvii.view.mother.MotherActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -134,6 +142,19 @@ public class MainActivity extends MotherActivity implements MySmsMessAdapterCall
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        MyApplication.ins().getMySmsMessageService().loadAllAsynch();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(RESULT, messages);
@@ -152,6 +173,37 @@ public class MainActivity extends MotherActivity implements MySmsMessAdapterCall
     }
 
     /***********************************************************
+     *  EventBus's events reception
+     **********************************************************/
+    /**
+     * This method is called by eventbus when MySmsMessage are loaded from database
+     * @param evt
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void mySmsLoaded(MySmsMessageLoadedEvent evt){
+        arrayAdapter.rebuild(evt.getMySmsMessageArrayList());
+    }
+    /**
+     * This method is called by eventbus when a MySmsMessage has been saved in database
+     * @param evt
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void mySmsAdded(MySmsMessageAddedEvent evt){
+        arrayAdapter.add(evt.getAddedMessage());
+        edtMessage.setText("");
+        //then you can hide the keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edtMessage.getWindowToken(), 0);
+    }
+    /**
+     * This method is called by eventbus when a MySmsMessage has been deleted in database
+     * @param evt
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void mySmsDeleted(MySmsMessageDeletedEvent evt){
+        arrayAdapter.deleteItem(evt.getDeletedMessage());
+    }
+    /***********************************************************
      *  Business Methods
      **********************************************************/
 
@@ -169,11 +221,8 @@ public class MainActivity extends MotherActivity implements MySmsMessAdapterCall
         //find the message of the edtMessage
         messageTemp = edtMessage.getText().toString();
         //second way
-        arrayAdapter.add(new MySmsMessage(messageTemp, messages.size()));
-        edtMessage.setText("");
-        //then you can hide the keyboard
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(edtMessage.getWindowToken(), 0);
+        MyApplication.ins().getMySmsMessageService().saveAsynch(new MySmsMessage(messageTemp, messages.size()));
+
 
     }
 
@@ -224,9 +273,23 @@ public class MainActivity extends MotherActivity implements MySmsMessAdapterCall
                     public void onClick(View v) {
                         undoItemDeletion();
                     }
+                })
+                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        super.onDismissed(transientBottomBar, event);
+                        if(event!=BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_ACTION){
+                            deleteITemForReal();
+                        }
+                    }
                 }).show();
+
     }
 
+    private void deleteITemForReal(){
+        //Here you can delete the item, the undo reflexion time has expired
+        MyApplication.ins().getMySmsMessageService().deleteAsynch(itemTemp);
+    }
     /**
      * Undo item deletion (not obvious?)
      */
@@ -242,6 +305,7 @@ public class MainActivity extends MotherActivity implements MySmsMessAdapterCall
 
     private void killThemAll() {
         arrayAdapter.clean();
+        MyApplication.ins().getMySmsMessageService().clearAsynch();
     }
 
     /***********************************************************

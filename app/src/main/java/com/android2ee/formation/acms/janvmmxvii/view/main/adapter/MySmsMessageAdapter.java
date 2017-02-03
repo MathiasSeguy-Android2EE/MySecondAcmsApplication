@@ -85,7 +85,7 @@ public class MySmsMessageAdapter extends ArrayAdapter<MySmsMessage> {
         //update the view
         vh.getTxvName().setText(smsMessage.getName());
         vh.getTxvMessage().setText(smsMessage.getMessage());
-        vh.getTxvFrom().setText(smsMessage.getFrom());
+        vh.getTxvFrom().setText(smsMessage.getTelFrom());
         vh.getImvPicture().setImageResource(smsMessage.getPictureId());
         vh.setCurrentPosition(position);
         return rowView;

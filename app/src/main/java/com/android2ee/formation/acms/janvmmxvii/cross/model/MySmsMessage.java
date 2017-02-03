@@ -36,41 +36,55 @@ import android.os.Parcelable;
 
 import com.android2ee.formation.acms.janvmmxvii.MyApplication;
 import com.android2ee.formation.acms.janvmmxvii.R;
+import com.orm.SugarRecord;
 
 /**
  * Created by Mathias Seguy - Android2EE on 31/01/2017.
  */
-public class MySmsMessage implements Parcelable {
+public class MySmsMessage extends SugarRecord implements Parcelable {
     public static final String TOTO = "Toto";
     public static final String TATA = "Tata";
     /***********************************************************
-     *  Attributes
+     * Attributes
      **********************************************************/
 
     private String name;
     private String message;
-    private String from;
+    private String telFrom;
     private int pictureId;
-    boolean fromOwner=false;
-    /***********************************************************
-     *  Constructors
-     **********************************************************/
-    public MySmsMessage(String mess,int position){
-        this.message=mess;
-        if(position%2==0){
-            name= TOTO;
-            fromOwner=true;
-            pictureId= R.drawable.ic_face_toto;
-        }else{
+    boolean fromOwner = false;
 
-            name= TATA;
-            fromOwner=true;
-            pictureId= R.drawable.ic_face_tata;
-        }
-        from=MyApplication.ins().getString(R.string.notset);
-    }
     /***********************************************************
-     *  Getters/Setters
+     * Constructors
+     **********************************************************/
+    public MySmsMessage() {
+        //empty constructor required by sugarOrm
+    }
+
+    public MySmsMessage(String mess, int position) {
+        this.message = mess;
+        if (position % 2 == 0) {
+            name = TOTO;
+            fromOwner = true;
+            pictureId = R.drawable.ic_face_toto;
+        } else {
+
+            name = TATA;
+            fromOwner = true;
+            pictureId = R.drawable.ic_face_tata;
+        }
+        telFrom = MyApplication.ins().getString(R.string.notset);
+    }
+
+    public MySmsMessage(String mess, String from) {
+        this.message = mess;
+        name = TATA;
+        fromOwner = false;
+        pictureId = R.drawable.ic_face_tata;
+    }
+
+    /***********************************************************
+     * Getters/Setters
      **********************************************************/
     public boolean isFromOwner() {
         return fromOwner;
@@ -104,12 +118,12 @@ public class MySmsMessage implements Parcelable {
         this.pictureId = pictureId;
     }
 
-    public String getFrom() {
-        return from;
+    public String getTelFrom() {
+        return telFrom;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setTelFrom(String telFrom) {
+        this.telFrom = telFrom;
     }
 
     /***********************************************************
@@ -119,7 +133,7 @@ public class MySmsMessage implements Parcelable {
     protected MySmsMessage(Parcel in) {
         name = in.readString();
         message = in.readString();
-        from = in.readString();
+        telFrom = in.readString();
         pictureId = in.readInt();
         fromOwner = in.readByte() != 0x00;
     }
@@ -133,7 +147,7 @@ public class MySmsMessage implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(message);
-        dest.writeString(from);
+        dest.writeString(telFrom);
         dest.writeInt(pictureId);
         dest.writeByte((byte) (fromOwner ? 0x01 : 0x00));
     }
@@ -150,4 +164,32 @@ public class MySmsMessage implements Parcelable {
             return new MySmsMessage[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MySmsMessage)) return false;
+
+        MySmsMessage that = (MySmsMessage) o;
+
+        if (that.getId() == getId()) return true;
+        if (getPictureId() != that.getPictureId()) return false;
+        if (isFromOwner() != that.isFromOwner()) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        if (getMessage() != null ? !getMessage().equals(that.getMessage()) : that.getMessage() != null)
+            return false;
+        return getTelFrom() != null ? getTelFrom().equals(that.getTelFrom()) : that.getTelFrom() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getMessage() != null ? getMessage().hashCode() : 0);
+        result = 31 * result + (getTelFrom() != null ? getTelFrom().hashCode() : 0);
+        result = 31 * result + getPictureId();
+        result = 31 * result + (isFromOwner() ? 1 : 0);
+        return result;
+    }
 }

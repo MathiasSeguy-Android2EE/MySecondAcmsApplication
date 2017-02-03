@@ -35,6 +35,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.android2ee.formation.acms.janvmmxvii.MyApplication;
+
 /**
  * Created by Mathias Seguy - Android2EE on 31/01/2017.
  */
@@ -69,6 +71,7 @@ public class MotherActivity extends AppCompatActivity {
     protected void onStop() {
         Log.e(TAG, "onStop() called");
         super.onStop();
+        MyApplication.ins().unbindAndDie();
     }
 
     @Override

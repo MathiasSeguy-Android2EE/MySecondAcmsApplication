@@ -36,6 +36,7 @@ import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ import java.util.ArrayList;
  * Created by Mathias Seguy - Android2EE on 01/02/2017.
  */
 public class MySmsMessRecyclerAdapter extends RecyclerView.Adapter<MySmsMessRecyclerAdapter.ViewHolder> {
+    private static final String TAG = "MySmsMessRecyclerAdapte";
     /***********************************************************
      *  Attributes
      **********************************************************/
@@ -90,7 +92,7 @@ public class MySmsMessRecyclerAdapter extends RecyclerView.Adapter<MySmsMessRecy
         //update the view
         holder.getTxvName().setText(smsMessage.getName());
         holder.getTxvMessage().setText(smsMessage.getMessage());
-        holder.getTxvFrom().setText(smsMessage.getFrom());
+        holder.getTxvFrom().setText(smsMessage.getTelFrom());
         holder.getImvPicture().setImageResource(smsMessage.getPictureId());
     }
     @Override
@@ -107,6 +109,18 @@ public class MySmsMessRecyclerAdapter extends RecyclerView.Adapter<MySmsMessRecy
      */
     private void deleteItem(int position){
        deleteItem(dataset.get(position),position);
+    }
+
+    /**
+     * Delete from the dataset the item
+     * @param item
+     */
+    public void deleteItem(MySmsMessage item){
+        if(dataset.contains(item)){
+            int pos=dataset.indexOf(item);
+            dataset.remove(pos);
+            notifyItemRemoved(pos);
+        }
     }
     /**
      * Delete from the dataset the item at the position below
@@ -143,6 +157,15 @@ public class MySmsMessRecyclerAdapter extends RecyclerView.Adapter<MySmsMessRecy
     public void add(MySmsMessage itemToAdd){
         dataset.add(itemToAdd);
         notifyItemInserted(dataset.size());
+    }
+
+    public void rebuild(ArrayList<MySmsMessage> mySmsMessageArrayList){
+        int size=dataset.size();
+        dataset.clear();
+        notifyItemRangeRemoved(0,size);
+        Log.e(TAG,"list size = "+mySmsMessageArrayList.size());
+        dataset=mySmsMessageArrayList;
+        notifyItemRangeInserted(0,dataset.size());
     }
 
     public MySmsMessage getItem(int position){
