@@ -47,6 +47,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Mathias Seguy - Android2EE on 01/02/2017.
  */
 public class MyApplication extends Application {
+    private static final String TAG = "MyApplication";
     /***********************************************************
      * Singleton Pattern
      **********************************************************/
@@ -67,6 +68,7 @@ public class MyApplication extends Application {
         SugarContext.init(this);
         instance=this;
         postICS=getResources().getBoolean(R.bool.postICS);
+        Log.e(TAG,"Is MyApplication equals getApplicationContext: "+this.equals(getApplicationContext()));
     }
 
     @Override
