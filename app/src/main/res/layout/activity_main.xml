@@ -7,12 +7,12 @@
     android:orientation="vertical"
     tools:context="com.android2ee.formation.acms.janvmmxvii.view.main.MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+        android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
@@ -48,7 +48,7 @@
             android:background="@drawable/background_shape"
             android:text="@string/btnAdd" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvResult"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

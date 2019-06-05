@@ -1,0 +1,4 @@
+//This is the list of the version of library you use
+project.ext {
+comGithubSatyan_sugar_Version=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
+}

@@ -1,0 +1,29 @@
+#  AndroidX
+- artifact: androidx.appcompat:appcompat:+
+  name: Android AppCompat Library v7
+  copyrightHolder: Google, Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+#  AndroidX
+- artifact: androidx.recyclerview:recyclerview:+
+  name: Android Support RecyclerView v7
+  copyrightHolder: Google, Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+#Material AndroidX
+- artifact: com.google.android.material:material:+
+  name: Material Components for Android
+  copyrightHolder: Google, Inc.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+#Green Robots libs
+- artifact: org.greenrobot:eventbus:+
+  name: EventBus
+  copyrightHolder: Markus Junginger, greenrobot
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://greenrobot.org/eventbus/
+

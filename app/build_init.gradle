@@ -69,23 +69,7 @@ android {
      **********************************************************/
     apply from: 'gradle/load_accounts.gradle'
 
-/***********************************************************
- *  Signing
- **********************************************************/
-signingConfigs {
-    debug {
-        storeFile project.ext.JKSFile
-        storePassword project.ext.JKSPassword
-        keyAlias project.ext.JKSKeyAlias
-        keyPassword project.ext.JKSKeyPassword
-    }
-    release {
-        storeFile project.ext.JKSFile_Release
-        storePassword project.ext.JKSPassword_Release
-        keyAlias project.ext.JKSKeyAlias_Release
-        keyPassword project.ext.JKSKeyPassword_Release
-    }
-}
+#SIGNIN_BLOCK
 
     /***********************************************************
      *  Default values for all variants
@@ -187,79 +171,7 @@ signingConfigs {
     useLibrary 'android.test.mock'
 }
 
-apply from: './var_def_lib.gradle'
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-//toto
-//tata
-	module:"libs)${libs)}"
-    //necessary to read JSONObject in tests
-	module:"org.json:json:${orgJson_json_Version}"
-    // LeakCanary declaration order matters https://github.com/square/leakcanary/issues/143
-	module:"com.squareup.leakcanary:leakcanary-android-no-op:${comSquareupLeakcanary_leakcanaryAndroidNoOp_Version}"
-    // LeakCanary declaration order matters https://github.com/square/leakcanary/issues/143
-	module:"com.squareup.leakcanary:leakcanary-android-no-op:${comSquareupLeakcanary_leakcanaryAndroidNoOp_Version}"
-    // LeakCanary declaration order matters https://github.com/square/leakcanary/issues/143
-	module:"com.squareup.leakcanary:leakcanary-android:${comSquareupLeakcanary_leakcanaryAndroid_Version}"
-    // LeakCanary declaration order matters https://github.com/square/leakcanary/issues/143
-	module:"com.squareup.leakcanary:leakcanary-android-no-op:${comSquareupLeakcanary_leakcanaryAndroidNoOp_Version}"
-    // Kotlin
-	module:"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${orgJetbrainsKotlin_kotlinStdlibJdk7_Version}"
-    // Retrofit and co
-	module:"com.squareup.moshi:moshi:${comSquareupMoshi_moshi_Version}"
-    // Retrofit and co
-	module:"com.squareup.retrofit2:retrofit:${comSquareupRetrofit2_retrofit_Version}"
-    // Retrofit and co
-	module:"com.squareup.retrofit2:converter-moshi:${comSquareupRetrofit2_converterMoshi_Version}"
-    // Retrofit and co
-	module:"com.squareup.okhttp3:okhttp:${comSquareupOkhttp3_okhttp_Version}"
-    // Retrofit and co
-	module:"com.squareup.okhttp3:logging-interceptor:${comSquareupOkhttp3_loggingInterceptor_Version}"
-    // Retrofit and co
-	module:"com.squareup.okio:okio:${comSquareupOkio_okio_Version}"
-    // EventBus
-	module:"org.greenrobot:eventbus:${orgGreenrobot_eventbus_Version}"
-    // Mockito
-	module:"org.mockito:mockito-core:${orgMockito_mockitoCore_Version}"
-    // NetWorkConnectionClass (Quality)
-	module:"com.facebook.network.connectionclass:connectionclass:${comFacebookNetworkConnectionclass_connectionclass_Version}"
-    //Dart and Hendson
-	module:"com.f2prateek.dart:dart:${comF2prateekDart_dart_Version}"
-    //Dart and Hendson
-	module:"com.f2prateek.dart:henson:${comF2prateekDart_henson_Version}"
-    //Dart and Hendson
-	module:"com.f2prateek.dart:dart-processor:${comF2prateekDart_dartProcessor_Version}"
-    //Dart and Hendson
-	module:"com.f2prateek.dart:henson-processor:${comF2prateekDart_hensonProcessor_Version}"
-    //Dart and Hendson
-	module:"com.batch.android:batch-sdk:${comBatchAndroid_batchSdk_Version}"
-    //Stetho just to check
-    //http://facebook.github.io/stetho/
-    //https://code.tutsplus.com/tutorials/debugging-android-apps-with-facebooks-stetho--cms-24205
-	module:"com.facebook.stetho:stetho:${comFacebookStetho_stetho_Version}"
-    //Stetho just to check
-    //http://facebook.github.io/stetho/
-    //https://code.tutsplus.com/tutorials/debugging-android-apps-with-facebooks-stetho--cms-24205
-	module:"com.facebook.stetho:stetho-okhttp3:${comFacebookStetho_stethoOkhttp3_Version}"
-    // Picasso (Image downloading and caching)
-	module:"com.squareup.picasso:picasso:${comSquareupPicasso_picasso_Version}"
-    //MPAndroidChart
-	module:"com.github.PhilJay:MPAndroidChart:${comGithubPhilJay_MPAndroidChart_Version}"
-	module:"job:is:done"
-	implementation "androidx.appcompat:appcompat:${androidxAppcompat_appcompat_Version}"
-	implementation "androidx.recyclerview:recyclerview:${androidxRecyclerview_recyclerview_Version}"
-	implementation "com.google.android.material:material:${comGoogleAndroidMaterial_material_Version}"
-	implementation "com.github.satyan:sugar:${comGithubSatyan_sugar_Version}"
-    // EventBus
-	implementation"org.greenrobot:eventbus:${orgGreenrobot_eventbus_Version}"
-    //Crashlytics
-    implementation("com.crashlytics.sdk.android:crashlytics:${comCrashlyticsSdkAndroid_crashlytics_Version}") {
-        transitive = true;
-    }
-    //Junit elements    
-    androidTestImplementation "junit:junit:${junit_junit_Version}" 
-    testImplementation "junit:junit:${junit_junit_Version}"
-}
+#DEPENDENCIES_BLOCK
 /*
 All direct/transitive dependencies shared between your test and production APKs need to be
 excluded from the test APK! This is necessary because both APKs will contain the same classes. Not

@@ -31,8 +31,8 @@
 
 package com.android2ee.formation.acms.janvmmxvii.view.main.adapter;
 
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Mathias Seguy - Android2EE on 02/02/2017.
